@@ -73,7 +73,12 @@ springdoc.swagger-ui.enabled=true
 mvn spring-boot:run
 ```
 
-### 5️⃣ Acessar a documentação Swagger
+### 5️⃣ Baixar a Collection do Postman
+- Você pode importar a collection do Postman para testar todos os endpoints da API:  
+- [📥 Baixar Collection do Postman](SPRINT03_SOA.postman_collection.json)
+
+
+### 6️⃣ Acessar a documentação Swagger
 - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ---

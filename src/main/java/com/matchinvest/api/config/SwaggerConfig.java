@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .version("1.0.0")
                 .contact(new Contact()
                         .name("Equipe MatchInvest")
-                        .url("https://github.com/matchinvestv2"))
+                        .url("https://github.com/Natan-TI/matchinvestV2"))
                 .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
 }
