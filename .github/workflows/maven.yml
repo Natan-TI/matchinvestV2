@@ -53,10 +53,17 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/maven@master
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+    - name: Run Snyk
+      run: snyk test --file=pom.xml --all-projects --json > snyk-report.json
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Upload Snyk Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: sca-report
+        path: snyk-report.json
         
   dast:
     runs-on: ubuntu-latest
