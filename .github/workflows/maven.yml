@@ -56,7 +56,7 @@ jobs:
     - name: Install Snyk CLI
       run: npm install -g snyk
     - name: Run Snyk
-      run: snyk test --file=pom.xml --all-projects --json --exit-code=0 > snyk-report.json
+      run: snyk test --file=pom.xml --all-projects --json > snyk-report.json || true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     - name: Upload Snyk Report
