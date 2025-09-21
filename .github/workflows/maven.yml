@@ -54,7 +54,12 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Run OWASP Dependency Check
-      run: mvn verify
+      run: mvn verify -DskipTests
+    - name: Upload SCA Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: sca-report
+        path: target/dependency-check-report.html
 
   dast:
     runs-on: ubuntu-latest
@@ -68,8 +73,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Run Spring Boot App
-      run: mvn spring-boot:run &
+      run: mvn spring-boot:run -DskipTests &
     - name: Wait for app
-      run: sleep 20
+      run: sleep 30
     - name: Run OWASP ZAP Scan
-      run: docker run -t --network="host" owasp/zap2docker-stable zap-baseline.py -t http://localhost:8080 -r zap_report.html
+      run: docker run --rm -v $(pwd):/zap/wrk/:rw owasp/zap2docker-stable zap-baseline.py -t http://host.docker.internal:8080 -r zap_report.html
+    - name: Upload DAST Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: dast-report
+        path: zap_report.html
