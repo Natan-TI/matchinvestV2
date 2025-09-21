@@ -82,13 +82,14 @@ jobs:
       run: sleep 30
     - name: Run OWASP ZAP Scan
       run: |
-        docker run --rm \
+        docker run --rm --user root \
           -v $(pwd):/zap/wrk \
           ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
           -t https://juice-shop.herokuapp.com \
-          -r zap_report.html
+          -r /zap/wrk/zap_report.html
     - name: Upload DAST Report
       uses: actions/upload-artifact@v4
       with:
         name: dast-report
         path: zap_report.html
+
