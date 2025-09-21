@@ -36,8 +36,8 @@ jobs:
         cache: maven
     - name: Run SonarCloud Scan
       run: mvn clean verify sonar:sonar \
-        -Dsonar.projectKey=SEU_PROJECT_KEY \
-        -Dsonar.organization=SUA_ORG \
+        -Dsonar.projectKey=Natan-TI_matchinvestV2 \
+        -Dsonar.organization=natan-ti \
         -Dsonar.host.url=https://sonarcloud.io \
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
