@@ -23,7 +23,7 @@ import com.matchinvest.api.dto.auth.RegisterRequest;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class AdvisorControllerTest {
+class AdvisorControllerTest{
 
     @Autowired
     private MockMvc mockMvc;

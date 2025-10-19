@@ -17,7 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 
+import com.matchinvest.api.config.TestDataInitializer;
 import com.matchinvest.api.dto.MatchCreateDTO;
 import com.matchinvest.api.dto.MatchResponseDTO;
 import com.matchinvest.api.entities.Advisor;
@@ -32,6 +34,7 @@ import com.matchinvest.api.vo.Email;
 import com.matchinvest.api.vo.Money;
 
 @ExtendWith(MockitoExtension.class)
+@Import({TestDataInitializer.class})
 class MatchServiceTest {
 
     @Mock
