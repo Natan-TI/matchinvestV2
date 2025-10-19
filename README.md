@@ -75,7 +75,7 @@ mvn spring-boot:run
 
 ### 5️⃣ Baixar a Collection do Postman
 - Você pode importar a collection do Postman para testar todos os endpoints da API:  
-- [📥 Baixar Collection do Postman](SPRINT03_SOA.postman_collection.json)
+- [📥 Baixar Collection do Postman](SPRINT04_SOA.postman_collection.json)
 
 
 ### 6️⃣ Acessar a documentação Swagger
@@ -83,28 +83,115 @@ mvn spring-boot:run
 
 ---
 
+## 🔐 Autenticação e Perfis de Acesso
+
+O sistema implementa autenticação **JWT (JSON Web Token)** e controle de acesso baseado em roles.
+
+| Role | Permissões |
+|------|-------------|
+| **ROLE_ADMIN** | Acesso completo a todos os endpoints |
+| **ROLE_INVESTOR** | Pode atualizar e deletar o próprio perfil |
+| **ROLE_ADVISOR** | Pode atualizar e deletar o próprio perfil |
+
+Após o login, o token JWT deve ser enviado no header de cada requisição:
+```
+Authorization: Bearer <token>
+```
+
+---
+
+## 🔍 Exemplos de Registro e Login
+
+### 💼 Registro de Investor
+**POST** `/api/auth/register`
+```json
+{
+  "name": "João da Silva",
+  "email": "joao@investor.com",
+  "password": "123456",
+  "accountType": "INVESTOR",
+  "investor": {
+    "goals": "Aposentadoria e independência financeira",
+    "avaliableAmount": 50000.00,
+    "riskProfile": "MODERADO"
+  },
+  "advisor": null
+}
+```
+
+### 💼 Registro de Advisor
+**POST** `/api/auth/register`
+```json
+{
+  "name": "Maria Consultora",
+  "email": "maria@advisor.com",
+  "password": "123456",
+  "accountType": "ADVISOR",
+  "advisor": {
+    "certifications": "CPA-20",
+    "investmentFocus": "ACOES",
+    "yearsExperience": 7
+  },
+  "investor": null
+}
+```
+
+### 🔑 Login e Autenticação
+**POST** `/api/auth/login`
+```json
+{
+  "email": "joao@investor.com",
+  "password": "123456"
+}
+```
+**Resposta:**
+```json
+{
+  "token": "<JWT_TOKEN>",
+  "tokenType": "Bearer",
+  "expiresInMs": 3600000
+}
+```
+
+Utilize esse token nas requisições autenticadas:
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+## 🧩 Migrations Flyway
+
+A base de dados é versionada via **Flyway**, garantindo consistência entre ambientes.  
+Versões aplicadas:
+
+| Versão | Descrição |
+|---------|------------|
+| `V1__create_tables.sql` | Estrutura inicial de entidades |
+| `V2__add_score_and_status_to_matches.sql` | Campos adicionais no match |
+| `V3__auth_tables.sql` | Tabelas de autenticação e roles |
+| `V4__add_user_fk_to_advisors_investors.sql` | Associação entre usuário e perfis |
+
+---
+
 ## 📌 Endpoints Principais
 
-### 🔹 Investor
-- `POST /api/investors` → Criar investidor  
-- `GET /api/investors` → Listar investidores  
-- `GET /api/investors/{id}` → Buscar investidor por ID  
-- `PUT /api/investors/{id}` → Atualizar investidor  
-- `DELETE /api/investors/{id}` → Deletar investidor  
+### 🔑 Autenticação
+- `POST /api/auth/register` → Cria um usuário e seu perfil (investor/advisor)  
+- `POST /api/auth/login` → Retorna token JWT  
 
-### 🔹 Advisor
-- `POST /api/advisors` → Criar assessor 
-- `GET /api/advisors` → Listar assessores 
-- `GET /api/advisors/{id}` → Buscar assessor por ID  
-- `PUT /api/advisors/{id}` → Atualizar assessor  
-- `DELETE /api/advisors/{id}` → Deletar assessor  
+### 👤 Investor
+- `GET /api/investors` → Lista todos os investidores  
+- `GET /api/investors/me` → Retorna o investor logado  
+- `PUT /api/investors/{id}` → Atualiza o próprio perfil (INVESTOR ou ADMIN)  
+- `DELETE /api/investors/{id}` → Deleta o próprio perfil  
 
-### 🔹 Match
-- `POST /api/matches` → Criar um match (investidor + assessor)  
-- `GET /api/matches/investor/{investorId}` → Listar matches de um investidor  
-- `GET /api/matches/advisor/{advisorId}` → Listar matches de um assessor  
-- `PATCH /api/matches/{id}/accept` → Aceitar match  
-- `PATCH /api/matches/{id}/reject` → Rejeitar match  
+### 💼 Advisor
+- `GET /api/advisors` → Lista todos os assessores  
+- `PUT /api/advisors/{id}` → Atualiza o próprio perfil (ADVISOR ou ADMIN)  
+
+### 🔗 Match
+- `GET /api/matches` → Lista matches existentes  
+- `PATCH /api/matches/{id}/accept` → Aceita match (ADMIN)  
+- `PATCH /api/matches/{id}/reject` → Rejeita match (ADMIN)
 
 ---
 
@@ -129,17 +216,21 @@ Erros de validação retornam no formato padronizado:
 
 ---
 
-## 🧪 Testes
-Foram implementados **testes unitários** utilizando **JUnit 5** e **Mockito**, garantindo a qualidade da camada de serviços.  
-Exemplos de testes:  
-- Criação de investidores e assessores.  
-- Criação de match válido.  
-- Validações de campos obrigatórios.  
+## 🧪 Testes Automatizados
 
-Rodar os testes:
+Os testes foram expandidos com **MockMvc** e cobrem:
+- Registro e login via `/api/auth/register` e `/api/auth/login`
+- Criação de advisor por ADMIN (201 Created)
+- Acesso negado (403) para usuários comuns
+- Atualização de perfil investor/advisor (200 OK)
+- Rejeição de requisições sem token (401 Unauthorized)
+
+Para executar:
 ```bash
 mvn test
 ```
+
+---
 
 ---
 
@@ -161,4 +252,4 @@ mvn test
 - Gustavo Henrique Santos Bonfim - RM98864  
 - Kayky Paschoal Ribeiro - RM99929  
 - Lucas Yuji Farias Umada - RM99757  
-- Natan Eguchi dos Santos - RM98720  
+- **Natan Eguchi dos Santos** - **RM98720** 

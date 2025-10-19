@@ -1,5 +1,6 @@
 package com.matchinvest.api.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,10 +36,12 @@ public class MatchService {
 		Advisor advisor = advisorRepository.findById(dto.advisorId())
 				.orElseThrow(() -> new EntityNotFoundException("Advisor not found"));
 		
+		double scoreValue = calculateScore(investor, advisor);
+		
 		Match match = new Match();
 		match.setInvestor(investor);
 		match.setAdvisor(advisor);
-		match.setScore(calculateScore(investor, advisor));
+		match.setScore(BigDecimal.valueOf(scoreValue));
 		match.setStatus(MatchStatus.PENDENTE);
 		
 		matchRepository.save(match);
@@ -118,7 +121,7 @@ public class MatchService {
 				match.getId(),
 				match.getInvestor().getId(),
 				match.getAdvisor().getId(),
-				match.getScore(),
+				match.getScore().doubleValue(),
 				match.getStatus(),
 				match.getCreatedAt()
 				);

@@ -39,8 +39,8 @@ public class Match {
 	@JoinColumn(name = "investor_id")
 	private Investor investor;
 	
-	@Column(nullable = false)
-	private Double score;
+	@Column(nullable = false, precision = 5, scale = 2)
+	private BigDecimal score;
 	
 	@Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)

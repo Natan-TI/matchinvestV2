@@ -13,6 +13,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +40,10 @@ public class Advisor {
 	
 	@Column(columnDefinition = "TEXT")
 	private String certifications;
+	
+	@OneToOne
+	@JoinColumn(name = "user_id", unique = true, nullable = false)
+	private User user;
 	
 	@Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)

@@ -3,15 +3,22 @@ package com.matchinvest.api.services;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.matchinvest.api.dto.AdvisorCreateDTO;
 import com.matchinvest.api.dto.AdvisorResponseDTO;
+import com.matchinvest.api.dto.AdvisorUpdateDTO;
 import com.matchinvest.api.entities.Advisor;
+import com.matchinvest.api.entities.User;
+import com.matchinvest.api.enums.InvestmentFocus;
+import com.matchinvest.api.enums.RiskProfile;
 import com.matchinvest.api.repositories.AdvisorRepository;
+import com.matchinvest.api.repositories.UserRepository;
 import com.matchinvest.api.vo.Email;
-import com.matchinvest.api.vo.Money;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class AdvisorService {
 	
 	private final AdvisorRepository repository;
+	private final UserRepository userRepo;
 	
 	@Transactional
 	public AdvisorResponseDTO create(AdvisorCreateDTO dto) { 
@@ -48,26 +56,42 @@ public class AdvisorService {
 	}
 	
 	@Transactional
-	public AdvisorResponseDTO update(UUID id, AdvisorCreateDTO dto) {
-		Advisor Advisor = repository.findById(id)
+	public AdvisorResponseDTO update(UUID id, AdvisorUpdateDTO dto) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        
+		Advisor advisor = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Advisor not found"));
 		
-		Advisor.setName(dto.name());
-		Advisor.setEmail(new Email(dto.email()));
-		Advisor.setCertifications(dto.certifications());
-		Advisor.setInvestmentFocus(dto.investmentFocus());
-		Advisor.setYearsExperience(dto.yearsExperience());
+		if (!advisor.getUser().getId().equals(user.getId()) && !user.hasRole("ADMIN")) {
+            throw new AccessDeniedException("Você só pode atualizar seu próprio perfil");
+        }
+
+		advisor.setCertifications(dto.certifications());
+		advisor.setInvestmentFocus(InvestmentFocus.valueOf(dto.investmentFocus().toUpperCase()));
+		advisor.setYearsExperience(dto.yearsExperience());
 		
-		return toResponse(repository.save(Advisor));
+		advisor.setName(advisor.getUser().getName());
+		advisor.setEmail(new Email(advisor.getUser().getEmail()));
+		
+		return toResponse(repository.save(advisor));
 	}
 	
 	@Transactional
-	public void delete(UUID id) {
-		if (!repository.existsById(id)) {
-			throw new EntityNotFoundException("Advisor not found");
-		}
-		repository.deleteById(id);
+	public void deleteOwnAccount() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName();
+
+	    User user = userRepo.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+	    userRepo.delete(user);
 	}
+
 	
 	private AdvisorResponseDTO toResponse(Advisor Advisor) {
 		return new AdvisorResponseDTO(

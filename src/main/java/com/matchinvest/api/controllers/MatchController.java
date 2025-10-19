@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,7 +29,7 @@ public class MatchController {
 
 	private final MatchService service;
 	
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<MatchResponseDTO> create(@Valid @RequestBody MatchCreateDTO dto) {
 		MatchResponseDTO match = service.create(dto);
@@ -45,6 +46,7 @@ public class MatchController {
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
 		service.deleteById(id);
@@ -61,11 +63,13 @@ public class MatchController {
 		return ResponseEntity.ok(service.findByAdvisor(advisorId));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/{id}/accept")
 	public ResponseEntity<MatchResponseDTO> accept(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok(service.accept(id));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/{id}/reject")
 	public ResponseEntity<MatchResponseDTO> reject(@PathVariable("id") UUID id) {
 		return ResponseEntity.ok(service.reject(id));

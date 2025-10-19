@@ -23,7 +23,7 @@ public record InvestorCreateDTO (
 	
 	@NotNull(message = "Valor disponível é obrigatório.")
 	@PositiveOrZero(message = "Valor deve ser maior ou igual a zero.")
-	BigDecimal valueAmount,
+	BigDecimal avaliableAmount,
 	
 	String goals
 ) {}

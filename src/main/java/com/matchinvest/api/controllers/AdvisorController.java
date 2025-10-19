@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.matchinvest.api.dto.AdvisorCreateDTO;
 import com.matchinvest.api.dto.AdvisorResponseDTO;
+import com.matchinvest.api.dto.AdvisorUpdateDTO;
 import com.matchinvest.api.services.AdvisorService;
 
 import jakarta.validation.Valid;
@@ -28,6 +30,7 @@ public class AdvisorController {
 	
 	private final AdvisorService service;
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<AdvisorResponseDTO> create(@Valid @RequestBody AdvisorCreateDTO dto) {
 		AdvisorResponseDTO advisor = service.create(dto);
@@ -44,14 +47,16 @@ public class AdvisorController {
 		return ResponseEntity.ok(service.findById(advisorId));
 	}
 	
+	@PreAuthorize("hasAnyRole('INVESTOR', 'ADVISOR')")
 	@PutMapping("/{advisorId}")
-	public ResponseEntity<AdvisorResponseDTO> update(@PathVariable("advisorId") UUID advisorId, @Valid @RequestBody AdvisorCreateDTO dto) {
+	public ResponseEntity<AdvisorResponseDTO> update(@PathVariable("advisorId") UUID advisorId, @Valid @RequestBody AdvisorUpdateDTO dto) {
 		return ResponseEntity.ok(service.update(advisorId, dto));
 	}
 	
-	@DeleteMapping("/{advisorId}")
-	public ResponseEntity<Void> deleteById(@PathVariable("advisorId") UUID advisorId) {
-		service.delete(advisorId);
-		return ResponseEntity.noContent().build();
-	}
+	@PreAuthorize("hasAnyRole('INVESTOR', 'ADVISOR')")
+	@DeleteMapping("/me")
+	public ResponseEntity<Void> deleteOwnAccount() {
+        service.deleteOwnAccount();
+        return ResponseEntity.noContent().build();
+    }
 }

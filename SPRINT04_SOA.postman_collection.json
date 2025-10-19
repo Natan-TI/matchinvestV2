@@ -1,0 +1,604 @@
+{
+	"info": {
+		"_postman_id": "d0cc2ced-d03c-4517-8624-a31a40dcb709",
+		"name": "SPRINT03_SOA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32521966"
+	},
+	"item": [
+		{
+			"name": "Advisors",
+			"item": [
+				{
+					"name": "createAdvisor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXRhbkBtYXRjaGludmVzdC5jb20iLCJpc3MiOiJtYXRjaGludmVzdCIsImlhdCI6MTc2MDcyMTU0NywiZXhwIjoxNzYwNzI1MTQ3LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.hcR2rNjqybI4CkKGhxRClAsVFNZrT9xOnalACUgmE68",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lucas Yuji\",\n  \"email\": \"lucas.yuji@exemplo.com\",\n  \"yearsExperience\": 10,\n  \"investmentFocus\": \"RENDA_FIXA\",\n  \"certifications\": \"CFA, CFP\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/advisors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAdvisors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHZAdGVzdGUuY29tIiwiaXNzIjoibWF0Y2hpbnZlc3QiLCJpYXQiOjE3NjA5MDU5NTcsImV4cCI6MTc2MDkwOTU1Nywicm9sZXMiOlsiUk9MRV9BRFZJU09SIl19.ITKMJQU2h56C4aRz86iVX-FlLG_XqppqkF2S8h47Md0\",",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/advisors",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAdvisorsById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXRhbkBtYXRjaGludmVzdC5jb20iLCJpc3MiOiJtYXRjaGludmVzdCIsImlhdCI6MTc2MDcyMTU0NywiZXhwIjoxNzYwNzI1MTQ3LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.hcR2rNjqybI4CkKGhxRClAsVFNZrT9xOnalACUgmE68",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/advisors/750471be-da0d-4e37-bbe5-550196ee53b3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"advisors",
+								"750471be-da0d-4e37-bbe5-550196ee53b3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAdvisor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHZAdGVzdGUuY29tIiwiaXNzIjoibWF0Y2hpbnZlc3QiLCJpYXQiOjE3NjA5MDU5NTcsImV4cCI6MTc2MDkwOTU1Nywicm9sZXMiOlsiUk9MRV9BRFZJU09SIl19.ITKMJQU2h56C4aRz86iVX-FlLG_XqppqkF2S8h47Md0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"certifications\": \"CFA, CFP, MBA\",\n  \"investmentFocus\": \"FUNDOS_IMOBILIARIOS\",\n  \"yearsExperience\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/advisors/54a86d04-dded-42d8-99df-4040ee459854",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"advisors",
+								"54a86d04-dded-42d8-99df-4040ee459854"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAdvisor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHZAdGVzdGUuY29tIiwiaXNzIjoibWF0Y2hpbnZlc3QiLCJpYXQiOjE3NjA5MDU5NTcsImV4cCI6MTc2MDkwOTU1Nywicm9sZXMiOlsiUk9MRV9BRFZJU09SIl19.ITKMJQU2h56C4aRz86iVX-FlLG_XqppqkF2S8h47Md0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/advisors/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"advisors",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Investors",
+			"item": [
+				{
+					"name": "createInvestor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYXRjaGludmVzdC5jb20iLCJpc3MiOiJtYXRjaGludmVzdCIsImlhdCI6MTc2MDg5OTA2OCwiZXhwIjoxNzYwOTAyNjY4LCJyb2xlcyI6WyJST0xFX0FETUlOIl19.BkEsmqtWsXqhe8Bkdq0ISCYmV5t_F1MAcikbhyLburc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ana Souza\",\n  \"email\": \"ana.souza@exemplo.com\",\n  \"riskProfile\": \"MODERADO\",\n  \"avaliableAmount\": 50000.00,\n  \"goals\": \"Aposentadoria e independência financeira\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/investors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"investors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getInvestors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHZAdGVzdGUuY29tIiwiaXNzIjoibWF0Y2hpbnZlc3QiLCJpYXQiOjE3NjA5MDU5NTcsImV4cCI6MTc2MDkwOTU1Nywicm9sZXMiOlsiUk9MRV9BRFZJU09SIl19.ITKMJQU2h56C4aRz86iVX-FlLG_XqppqkF2S8h47Md0\",",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/investors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"investors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getInvestorById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/investors/f7b1b26f-e688-40e9-94bc-198fb727cac8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"investors",
+								"f7b1b26f-e688-40e9-94bc-198fb727cac8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateInvestor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvQHRlc3RlLmNvbSIsImlzcyI6Im1hdGNoaW52ZXN0IiwiaWF0IjoxNzYwOTA2NzI5LCJleHAiOjE3NjA5MTAzMjksInJvbGVzIjpbIlJPTEVfSU5WRVNUT1IiXX0.DSQAooksh-1LL88In5WzTiXlZ_AkRujAKKAjIwjmmYw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"riskProfile\": \"AGRESSIVO\",\n  \"avaliableAmount\": 20000.00,\n  \"goals\": \"TESTANDOOO\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/investors/9ad1efc6-aab7-429c-a36e-7fe5d1f01297",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"investors",
+								"9ad1efc6-aab7-429c-a36e-7fe5d1f01297"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteInvestor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2FvQHRlc3RlLmNvbSIsImlzcyI6Im1hdGNoaW52ZXN0IiwiaWF0IjoxNzYwOTAzODM4LCJleHAiOjE3NjA5MDc0MzgsInJvbGVzIjpbIlJPTEVfSU5WRVNUT1IiXX0.ex1Iu8_Zu_pIj1FKXe7Zbg8cH-hAKezjgEdGKM1Z8ew",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/investors/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"investors",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matches",
+			"item": [
+				{
+					"name": "createMatch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"investorId\": \"d84b6f41-d98b-4f4f-9730-bc3c0827632c\",\n  \"advisorId\": \"750471be-da0d-4e37-bbe5-550196ee53b3\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/matches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllMatches",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXRhbkBtYXRjaGludmVzdC5jb20iLCJpc3MiOiJtYXRjaGludmVzdCIsImlhdCI6MTc2MDcyMTU0NywiZXhwIjoxNzYwNzI1MTQ3LCJyb2xlcyI6WyJST0xFX1VTRVIiXX0.hcR2rNjqybI4CkKGhxRClAsVFNZrT9xOnalACUgmE68",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"investorId\": \"d84b6f41-d98b-4f4f-9730-bc3c0827632c\",\n  \"advisorId\": \"750471be-da0d-4e37-bbe5-550196ee53b3\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/matches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMatchById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/matches/02a379cb-02ef-475f-9bdb-660285f316b1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"02a379cb-02ef-475f-9bdb-660285f316b1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMatchById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"investorId\": \"d84b6f41-d98b-4f4f-9730-bc3c0827632c\",\n  \"advisorId\": \"750471be-da0d-4e37-bbe5-550196ee53b3\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/matches/02a379cb-02ef-475f-9bdb-660285f316b1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"02a379cb-02ef-475f-9bdb-660285f316b1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMatchsByInvestor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/matches/investor/d84b6f41-d98b-4f4f-9730-bc3c0827632c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"investor",
+								"d84b6f41-d98b-4f4f-9730-bc3c0827632c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMatchsByAdvisor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/matches/advisor/750471be-da0d-4e37-bbe5-550196ee53b3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"advisor",
+								"750471be-da0d-4e37-bbe5-550196ee53b3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "acceptMatch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/matches/fb30aff4-891a-41dd-9483-27f3c00a1e10/accept",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"fb30aff4-891a-41dd-9483-27f3c00a1e10",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rejectMatch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/matches/fb30aff4-891a-41dd-9483-27f3c00a1e10/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"matches",
+								"fb30aff4-891a-41dd-9483-27f3c00a1e10",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Advisor Tester\",\n  \"email\": \"adv@teste.com\",\n  \"password\": \"123456\",\n  \"accountType\": \"ADVISOR\",\n  \"advisor\": {\n    \"yearsExperience\": 10,\n    \"investmentFocus\": \"RENDA_FIXA\",\n    \"certifications\": \"CFA, CFP\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"joao@teste.com\",\n  \"password\": \"123456\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

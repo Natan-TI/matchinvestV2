@@ -3,13 +3,20 @@ package com.matchinvest.api.services;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.matchinvest.api.dto.InvestorCreateDTO;
 import com.matchinvest.api.dto.InvestorResponseDTO;
+import com.matchinvest.api.dto.InvestorUpdateDTO;
 import com.matchinvest.api.entities.Investor;
+import com.matchinvest.api.entities.User;
+import com.matchinvest.api.enums.RiskProfile;
 import com.matchinvest.api.repositories.InvestorRepository;
+import com.matchinvest.api.repositories.UserRepository;
 import com.matchinvest.api.vo.Email;
 import com.matchinvest.api.vo.Money;
 
@@ -21,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class InvestorService {
 	
 	private final InvestorRepository repository;
+	private final UserRepository userRepo;
 	
 	@Transactional
 	public InvestorResponseDTO create(InvestorCreateDTO dto) { 
@@ -28,7 +36,7 @@ public class InvestorService {
 		investor.setName(dto.name());
 		investor.setEmail(new Email(dto.email()));
 		investor.setRiskProfile(dto.riskProfile());
-		investor.setAvaliableAmount(new Money(dto.valueAmount()));
+		investor.setAvaliableAmount(new Money(dto.avaliableAmount()));
 		investor.setGoals(dto.goals());
 		
 		repository.save(investor);
@@ -48,26 +56,40 @@ public class InvestorService {
 	}
 	
 	@Transactional
-	public InvestorResponseDTO update(UUID id, InvestorCreateDTO dto) {
+	public InvestorResponseDTO update(UUID id, InvestorUpdateDTO dto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 		Investor investor = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Investor not found"));
 		
-		investor.setName(dto.name());
-		investor.setEmail(new Email(dto.email()));
-		investor.setRiskProfile(dto.riskProfile());
-		investor.setAvaliableAmount(new Money(dto.valueAmount()));
+		if (!investor.getUser().getId().equals(user.getId()) && !user.hasRole("ADMIN")) {
+            throw new AccessDeniedException("Você só pode atualizar seu próprio perfil");
+        }
+		
+		investor.setRiskProfile(RiskProfile.valueOf(dto.riskProfile().toUpperCase()));
+		investor.setAvaliableAmount(new Money(dto.avaliableAmount()));
 		investor.setGoals(dto.goals());
+		
+		investor.setName(investor.getUser().getName());
+		investor.setEmail(new Email(investor.getUser().getEmail()));
 		
 		return toResponse(repository.save(investor));
 	}
 	
 	@Transactional
-	public void delete(UUID id) {
-		if (!repository.existsById(id)) {
-			throw new EntityNotFoundException("Investor not found");
-		}
-		repository.deleteById(id);
+	public void deleteOwnAccount() {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String email = auth.getName();
+
+	    User user = userRepo.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+	    userRepo.delete(user);
 	}
+
 	
 	private InvestorResponseDTO toResponse(Investor investor) {
 		return new InvestorResponseDTO(

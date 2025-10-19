@@ -1,6 +1,8 @@
 package com.matchinvest.api.dto;
 
 import com.matchinvest.api.enums.MatchStatus;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
