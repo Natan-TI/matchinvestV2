@@ -34,13 +34,21 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Run SonarCloud Scan
-      run: | 
-        mvn clean verify sonar:sonar -DskipTests \
+  
+    - name: Run SonarCloud Scan with Coverage
+      env:
+        SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+        SPRING_DATASOURCE_USERNAME: sa
+        SPRING_DATASOURCE_PASSWORD: ''
+        SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        mvn -Dtest=MatchServiceTest clean verify sonar:sonar \
         -Dsonar.projectKey=Natan-TI_matchinvestV2 \
         -Dsonar.organization=natan-ti \
         -Dsonar.host.url=https://sonarcloud.io \
         -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
   sca:
     runs-on: ubuntu-latest
