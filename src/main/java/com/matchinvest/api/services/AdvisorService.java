@@ -32,15 +32,15 @@ public class AdvisorService {
 	
 	@Transactional
 	public AdvisorResponseDTO create(AdvisorCreateDTO dto) { 
-		Advisor Advisor = new Advisor();
-		Advisor.setName(dto.name());
-		Advisor.setEmail(new Email(dto.email()));
-		Advisor.setCertifications(dto.certifications());
-		Advisor.setInvestmentFocus(dto.investmentFocus());
-		Advisor.setYearsExperience(dto.yearsExperience());
+		Advisor advisor = new Advisor();
+		advisor.setName(dto.name());
+		advisor.setEmail(new Email(dto.email()));
+		advisor.setCertifications(dto.certifications());
+		advisor.setInvestmentFocus(dto.investmentFocus());
+		advisor.setYearsExperience(dto.yearsExperience());
 		
-		repository.save(Advisor);
-		return toResponse(Advisor);
+		repository.save(advisor);
+		return toResponse(advisor);
 	}
 	
 	@Transactional(readOnly = true)
@@ -50,9 +50,9 @@ public class AdvisorService {
 	
 	@Transactional(readOnly = true)
 	public AdvisorResponseDTO findById(UUID id) {
-		Advisor Advisor = repository.findById(id)
+		Advisor advisor = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Advisor not found"));
-		return toResponse(Advisor);
+		return toResponse(advisor);
 	}
 	
 	@Transactional
@@ -93,15 +93,15 @@ public class AdvisorService {
 	}
 
 	
-	private AdvisorResponseDTO toResponse(Advisor Advisor) {
+	private AdvisorResponseDTO toResponse(Advisor advisor) {
 		return new AdvisorResponseDTO(
-				Advisor.getId(),
-				Advisor.getName(),
-				Advisor.getEmail().getValue(),
-				Advisor.getCertifications(),
-				Advisor.getInvestmentFocus(),
-				Advisor.getYearsExperience(),
-				Advisor.getCreatedAt()
+				advisor.getId(),
+				advisor.getName(),
+				advisor.getEmail().getValue(),
+				advisor.getCertifications(),
+				advisor.getInvestmentFocus(),
+				advisor.getYearsExperience(),
+				advisor.getCreatedAt()
 				);
 	}
 }

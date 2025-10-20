@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         @SuppressWarnings("unchecked")
         var roles = (List<String>) jws.getBody().get("roles");
         var authorities = roles == null ? List.<SimpleGrantedAuthority>of()
-            : roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            : roles.stream().map(SimpleGrantedAuthority::new).toList();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         var auth = new UsernamePasswordAuthenticationToken(
             userDetails, null, authorities);
