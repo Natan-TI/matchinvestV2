@@ -1,4 +1,3 @@
-// JwtTokenService.java
 package com.matchinvest.api.security;
 
 import io.jsonwebtoken.*;
