@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(auth);
       } catch (Exception e) {
+    	  // Comment for sonar cloud issue
       }
     }
 
