@@ -1,7 +1,5 @@
 package com.matchinvest.api.dto;
 
-import com.matchinvest.api.enums.InvestmentFocus;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 

@@ -1,16 +1,17 @@
 package com.matchinvest.api.config;
 
-import com.matchinvest.api.entities.Role;
-import com.matchinvest.api.entities.User;
-import com.matchinvest.api.repositories.RoleRepository;
-import com.matchinvest.api.repositories.UserRepository;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.matchinvest.api.entities.Role;
+import com.matchinvest.api.entities.User;
+import com.matchinvest.api.repositories.RoleRepository;
+import com.matchinvest.api.repositories.UserRepository;
 
 @TestConfiguration
 public class TestDataInitializer {

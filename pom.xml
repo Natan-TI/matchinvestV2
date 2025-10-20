@@ -167,9 +167,14 @@
 			  <version>0.8.10</version>
 			  <executions>
 			    <execution>
+			      <id>prepare-agent</id>
 			      <goals>
 			        <goal>prepare-agent</goal>
 			      </goals>
+			      <configuration>
+			        <!-- Garante que o agente do JaCoCo é anexado aos testes -->
+			        <propertyName>jacocoArgLine</propertyName>
+			      </configuration>
 			    </execution>
 			    <execution>
 			      <id>report</id>
@@ -177,9 +182,45 @@
 			      <goals>
 			        <goal>report</goal>
 			      </goals>
+			      <configuration>
+			        <!-- Caminho para o Sonar ler -->
+			        <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+			      </configuration>
+			    </execution>
+			    <execution>
+			      <id>coverage-check</id>
+			      <goals>
+			        <goal>check</goal>
+			      </goals>
+			      <configuration>
+			        <rules>
+			          <rule>
+			            <element>BUNDLE</element>
+			            <limits>
+			              <limit>
+			                <counter>INSTRUCTION</counter>
+			                <value>COVEREDRATIO</value>
+			                <minimum>0.0</minimum>
+			              </limit>
+			            </limits>
+			          </rule>
+			        </rules>
+			      </configuration>
 			    </execution>
 			  </executions>
 			</plugin>
+			
+			<!-- Garante que o Jacoco é injetado no surefire -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-surefire-plugin</artifactId>
+			  <version>3.2.5</version>
+			  <configuration>
+			    <argLine>${jacocoArgLine}</argLine>
+			    <useSystemClassLoader>true</useSystemClassLoader>
+			  </configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
