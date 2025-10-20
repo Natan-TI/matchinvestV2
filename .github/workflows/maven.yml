@@ -37,6 +37,7 @@ jobs:
   
     - name: Run tests and SonarCloud Scan with full coverage
       env:
+        SPRING_PROFILES_ACTIVE: test
         SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
         SPRING_DATASOURCE_USERNAME: sa
         SPRING_DATASOURCE_PASSWORD: ''
