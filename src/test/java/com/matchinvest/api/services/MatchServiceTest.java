@@ -1,6 +1,7 @@
 package com.matchinvest.api.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,6 +33,8 @@ import com.matchinvest.api.repositories.InvestorRepository;
 import com.matchinvest.api.repositories.MatchRepository;
 import com.matchinvest.api.vo.Email;
 import com.matchinvest.api.vo.Money;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 @Import({TestDataInitializer.class})
@@ -91,4 +94,56 @@ class MatchServiceTest {
         assertThat(result.status().toString()).isEqualTo("PENDENTE");
         verify(matchRepository, times(1)).save(any(Match.class));
     }
+    
+    @Test
+    void shouldThrowWhenInvestorNotFound() {
+        UUID investorId = UUID.randomUUID();
+        UUID advisorId = UUID.randomUUID();
+
+        when(investorRepository.findById(investorId)).thenReturn(Optional.empty());
+
+        MatchCreateDTO dto = new MatchCreateDTO(investorId, advisorId);
+
+        assertThatThrownBy(() -> matchService.create(dto))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("Investor not found");
+    }
+    
+    @Test
+    void shouldThrowWhenAdvisorNotFound() {
+        UUID investorId = UUID.randomUUID();
+        UUID advisorId = UUID.randomUUID();
+
+        when(investorRepository.findById(investorId)).thenReturn(Optional.of(investor));
+        when(advisorRepository.findById(advisorId)).thenReturn(Optional.empty());
+
+        MatchCreateDTO dto = new MatchCreateDTO(investorId, advisorId);
+
+        assertThatThrownBy(() -> matchService.create(dto))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("Advisor not found");
+    }
+
+    @Test
+    void shouldReturnAllMatchesByInvestorId() {
+        Match match = Match.builder()
+                .id(UUID.randomUUID())
+                .advisor(advisor)
+                .investor(investor)
+                .score(new BigDecimal("75.0"))
+                .status(com.matchinvest.api.enums.MatchStatus.PENDENTE)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        when(investorRepository.findById(investor.getId())).thenReturn(Optional.of(investor));
+        when(matchRepository.findByInvestor(investor))
+                .thenReturn(java.util.List.of(match));
+
+        var result = matchService.findByInvestor(investor.getId());
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).score()).isEqualByComparingTo(75.0);
+    }
+
+
 }
