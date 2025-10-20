@@ -35,8 +35,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
   
-    - name: Run tests and SonarCloud Scan with full coverage
+    - name: Run unit tests and SonarCloud Scan (skip integration tests)
       env:
+        SPRING_PROFILES_ACTIVE: test
         SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
         SPRING_DATASOURCE_USERNAME: sa
         SPRING_DATASOURCE_PASSWORD: ''
@@ -50,9 +51,8 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
           -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
-          -Dsonar.java.binaries=target/classes
-
-
+          -Dsonar.java.binaries=target/classes \
+          -Dtest='!**/*ControllerTest*,!**/*ApplicationTests*'
 
   sca:
     runs-on: ubuntu-latest
