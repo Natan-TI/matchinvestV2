@@ -1,7 +1,6 @@
 package com.matchinvest.api.services.impl;
 
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -15,7 +15,6 @@ import com.matchinvest.api.dto.AdvisorUpdateDTO;
 import com.matchinvest.api.entities.Advisor;
 import com.matchinvest.api.entities.User;
 import com.matchinvest.api.enums.InvestmentFocus;
-import com.matchinvest.api.enums.RiskProfile;
 import com.matchinvest.api.repositories.AdvisorRepository;
 import com.matchinvest.api.repositories.UserRepository;
 import com.matchinvest.api.vo.Email;

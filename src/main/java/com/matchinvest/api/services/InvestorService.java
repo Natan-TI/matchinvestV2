@@ -65,7 +65,7 @@ public class InvestorService {
 		Investor investor = repository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Investor not found"));
 		
-		if (!investor.getUser().getId().equals(user.getId()) && !user.hasRole("ADMIN")) {
+		if (!investor.getUser().getId().equals(user.getId()) || !user.hasRole("ADMIN")) {
             throw new AccessDeniedException("Você só pode atualizar seu próprio perfil");
         }
 		

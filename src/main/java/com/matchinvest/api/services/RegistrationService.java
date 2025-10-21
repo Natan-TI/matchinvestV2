@@ -3,6 +3,7 @@ package com.matchinvest.api.services;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ public class RegistrationService {
   private final InvestorRepository investorRepo;
   private final PasswordEncoder encoder;
   private final JwtTokenService tokenService;
+  
+  private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
   public RegistrationService(
       UserRepository userRepo,
@@ -105,6 +108,8 @@ public class RegistrationService {
       Map.of("roles", u.getRoles().stream().map(Role::getName).toList(),
              "accountType", req.accountType().name())
     );
+    
+    logger.info("Usuário '{}' registrou-se e aceitou os termos em {}", req.email(), java.time.LocalDateTime.now());
 
     return new AuthResponse(token, "Bearer", 3600000);
   }

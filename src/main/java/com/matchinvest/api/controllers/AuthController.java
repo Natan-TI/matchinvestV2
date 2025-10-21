@@ -4,6 +4,7 @@ package com.matchinvest.api.controllers;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,8 @@ public class AuthController {
   private final JwtTokenService tokenService;
   private final PasswordEncoder passwordEncoder;
   private final RegistrationService registrationService;
+  
+  private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RegistrationService.class);
 
   public AuthController(UserService userService, JwtTokenService tokenService, PasswordEncoder passwordEncoder, RegistrationService registrationService) {
     this.userService = userService; this.tokenService = tokenService; this.passwordEncoder = passwordEncoder; this.registrationService = registrationService;
@@ -61,6 +64,8 @@ public class AuthController {
               .collect(Collectors.toList());
 
       String token = tokenService.generate(user.getEmail(), Map.of("roles", roles));
+      
+      logger.info("Usuário '{}' realizou login em {}", req.email(), java.time.LocalDateTime.now());
 
       return ResponseEntity.ok(new AuthResponse(token, "Bearer", 3600000));
   }
